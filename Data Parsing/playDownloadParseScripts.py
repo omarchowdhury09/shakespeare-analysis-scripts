@@ -10,6 +10,7 @@ import urllib2
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
+import numpy as np
 
 rootURL = 'https://www.opensourceshakespeare.org/views/plays/plays_alpha.php'
 playURL = 'https://www.opensourceshakespeare.org/views/plays/play_view.php?WorkID=%s&Scope=entire&pleasewait=1&msg=pl'
@@ -51,5 +52,10 @@ playsFrame = pd.DataFrame(lineList, columns = ("Play","Character","Speech"))
 playsFrame["Speech"] = playsFrame.Speech.str.replace("[^a-zA-Z0-9 ]+","").str.lower()
 # another option
 # playsFrame["Speech"] = playsFrame.Speech.str.replace("[^a-zA-Z0-9]+"," ").str.lower()
-    
+
+(playsFrame.groupby("Play").apply(lambda x: np.mean(x.Speech.str.len()))/np.mean(playsFrame.Speech.str.len())).plot(kind = 'bar')
+
+(playsFrame.groupby("Play").apply(lambda x: np.sum(x.Speech.str.len()))/playsFrame.groupby("Play").apply(lambda x: np.sum(x.Speech.str.len())).mean()).plot(kind = 'bar')
+
+(playsFrame.groupby("Play").apply(lambda x: np.std(x.Speech.str.len()))/playsFrame.groupby("Play").apply(lambda x: np.std(x.Speech.str.len())).mean()).plot(kind = 'bar')
 

@@ -41,3 +41,4 @@ frequencyTable.sort_values("Frequency",
                            ascending = False).head(50).plot(x="Word",
                                                   y="Frequency",kind= 'bar')
 
+
